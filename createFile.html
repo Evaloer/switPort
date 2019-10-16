@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>建档</title>
+</head>
+<script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+<style>
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    ol,
+    ul,
+    dl,
+    dd,
+    p,
+    input,
+    select,
+    textarea,
+    td {
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        font-size: 26.67vw;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    body {
+        font-family: "微软雅黑";
+        display: -webkit-flex;
+        flex-direction: column;
+        background: rgb(242, 242, 242);
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    ul,
+    ol {
+        list-style: none;
+    }
+
+    img {
+        border: 0;
+        display: block;
+    }
+
+    /* header */
+    header {
+        width: 100%;
+        height: .4rem;
+        background: url(img/cr_head.jpg) no-repeat;
+        background-size: 100% 100%;
+        display: -webkit-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    /* section */
+    section {
+        width: 100%;
+        -webkit-flex: 1;
+        overflow-y: auto;
+    }
+
+    .contMode {
+        width: 100%;
+        margin-top: .1rem;
+        /* display: -webkit-flex;
+        justify-content: center; */
+    }
+
+    .contModeBox {
+        width: 96%;
+        /* height: 4rem; */
+        background: #fff;
+        margin:0 auto;
+    }
+
+    .contImportBox {
+        padding: .1rem .2rem .1rem .2rem;
+    }
+
+    .contImportBox table {
+        width: 100%;
+        font-size: 14px;
+        color: #666;
+        border-bottom: 1px solid #cdcdcd;
+    }
+
+    .titleJZQ {
+        font-size: 15px;
+        border-top: 1px solid #cdcdcd;
+        line-height: .4rem;
+        color: #282dc5;
+        font-weight: 600;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    .contImportBox table tr {
+        height: .46rem;
+        border-bottom: 1px solid #e9e9e9;
+    }
+
+    .contImportBox input {
+        -web-kit-appearance: none;
+        -moz-appearance: none;
+        font-size: .16rem;
+        height: 0.3rem;
+        width: 2rem;
+        border-radius: 5px;
+        padding:0 .05rem 0 .05rem;
+        border: 1px solid #c8cccf;
+        color: #6a6f77;
+    }
+    #createBtn{
+        width:100%;
+        height:.4rem;
+        /* background:#cdcdcd; */ 
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: .06rem;
+    }
+    #createBtn p{
+        width:60%;
+        height:.3rem;
+        text-align: center;
+        font-size:.16rem;
+        line-height: .3rem;
+        font-weight: 600;
+        background:#fff url(img/foot-back.jpg) no-repeat;
+        background-size:70% 100%;
+        border:1px solid #cdcdcd;
+        border-radius: .05rem;
+    }
+    .contShowBox{
+        width: 96%;
+        height: 1rem;
+        background: #fff;
+        margin:.1rem auto 0;
+    }
+    /* footer */
+    footer {
+        width: 100%;
+        background: #fff;
+        height: .4rem;
+    }
+</style>
+
+<body>
+    <!-- 头部 -->
+    <header>
+        <p>手动建档</p>
+    </header>
+    <!-- 中间 -->
+    <section>
+        <div class="contMode">
+            <div class="contModeBox">
+                <div class="contImportBox">
+                    <table>
+                        <thead>
+                            <p class="titleJZQ">注册集中器档案信息</p>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    集中器编号：
+                                </td>
+                                <td><input type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    出货厂家：
+                                </td>
+                                <td><input type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    域名(IP)：
+                                </td>
+                                <td><input type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    端口：
+                                </td>
+                                <td><input type="text"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    系统网址：
+                                </td>
+                                <td id="ConcentURL">
+                                    <input type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    建档时间：
+                                </td>
+                                <td id="ConcentTime">
+                                    <input type="text">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="createBtn">
+                    <p>创建</p>
+                </div>
+            </div>
+            <div class="contShowBox"></div>
+        </div>
+    </section>
+    <!-- 底部 -->
+    <footer>
+
+    </footer>
+</body>
+
+</html>

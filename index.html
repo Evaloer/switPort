@@ -126,13 +126,18 @@
 
     .textP_a {
         font-size: 15px;
-        /* color: #888; */
-        text-align: center;
-        line-height: .5rem;
+        display: -webkit-flex;
+        justify-content: center;
+        align-items: center;
+        height: .5rem;
     }
-    .textSp{
-        color:#3639fa;
+
+    .textSp {
+        display: inline-block;
+        width: 18%;
+        border-top: 1px solid #999;
     }
+
     .textP_b {
         font-size: 15px;
         /* color: #888; */
@@ -143,12 +148,16 @@
     }
 
     .textP_b input {
+        -web-kit-appearance: none;
+        -moz-appearance: none;
+        font-size: .14rem;
         width: 55%;
         height: .28rem;
-        border: none;
+        border-radius: .06rem;
+        padding: 0 .05rem 0 .05rem;
         border: 1px solid #cdcdcd;
-        margin-left: .1rem;
-        padding-left: .05rem;
+        color: #6a6f77;
+        margin-left: .05rem;
     }
 
     .inquireBtn {
@@ -156,10 +165,9 @@
         height: .25rem;
         border: 1px solid #cdcdcd;
         font-size: 14px;
-        margin: 0 auto;
+        margin: .1rem auto 0;
         text-align: center;
         border-radius: .1rem;
-        margin-top: .1rem;
         -moz-box-shadow: 3px 3px 5px #e9e9e9;
         -webkit-box-shadow: 3px 3px 5px #e9e9e9;
         box-shadow: 3px 3px 5px #e9e9e9;
@@ -170,7 +178,7 @@
         width: .38rem;
         height: .26rem;
         border: 1px solid #cdcdcd;
-        margin-left: .1rem;
+        margin-left: .05rem;
         border-radius: .05rem;
         padding-top: .02rem;
     }
@@ -230,40 +238,45 @@
         margin-top: .1rem;
     }
 
-    .explainModeText{
+    .explainModeText {
         width: 96%;
         height: .4rem;
         background-color: #fff;
         text-align: center;
-        margin:0 auto .05rem;
+        margin: 0 auto .05rem;
     }
+
     .explainModeText p {
         color: #000;
         line-height: .4rem;
         font-size: .14rem;
     }
+
     .explainModeBox {
         width: 96%;
         height: .5rem;
         background: #fff url(img/foBox-back.png) no-repeat;
         background-size: 100% 100%;
         text-align: center;
-        margin:0 auto;
-        display:-webkit-flex;
+        margin: 0 auto;
+        display: -webkit-flex;
         justify-content: center;
         align-items: center;
     }
+
     .explainModeBox p {
         color: #1195fe;
         line-height: .5rem;
         font-size: .16rem;
         font-weight: 600;
-        margin-right:.1rem;
+        margin-right: .1rem;
     }
-    .explainModeBox img{
-        width:.3rem;
-        height:.3rem;
+
+    .explainModeBox img {
+        width: .3rem;
+        height: .3rem;
     }
+
     /* footer */
     footer {
         width: 100%;
@@ -285,7 +298,7 @@
         width: 30%;
         height: .3rem;
         background: #fff url(img/foot-back.jpg) no-repeat;
-        background-size:80% 100%;
+        background-size: 80% 100%;
         border-radius: .1rem;
         position: relative;
         top: -.2rem;
@@ -451,9 +464,14 @@
     <section>
         <div class="contMode">
             <div class="contModeBox">
-                <p class="textP_a"> <span class="textSp">————</span>&nbsp;&nbsp;集中器（扫描 / 输入） <span class="textSp">————</span></p>
+                <div class="textP_a">
+                    <span class="textSp"></span>
+                    &nbsp;&nbsp;集中器（扫描 / 输入）
+                    <span class="textSp"></span>
+                </div>
                 <div class="textP_b">
-                    编号：<input type="text" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()" maxlength="14" >
+                    编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()"
+                        maxlength="14" on />
                     <div class="scanIcon"><img src="img/scan.png" alt=""></div>
                 </div>
                 <div class="inquireBtn" onclick='ConcentInform()'>查询</div>
@@ -559,18 +577,16 @@
             success: function (msg) {
                 var msg1 = msg.split("|");
                 // console.log(msg1);
-                for (var i = 0; i < msg1.length; i++) {
-                    // console.log(msg[0]);
-                    if (msg[0] == 1) {
-                        $("#ConcentNum").text(msg1[2]);
-                        $("#ConcentAddr").text(msg1[4]);
-                        $("#ConcentIP").text(msg1[5]);
-                        $("#ConcentPort").text(msg1[6]);
-                    } else if (msg[0] == 0) {
-                        alert("未查询到");
-                    } else if (msg[0] == 1) {
-                        alert("连接服务器失败");
-                    }
+                // console.log(msg[0]);
+                if (msg[0] == 1) {
+                    $("#ConcentNum").text(msg1[2]);
+                    $("#ConcentAddr").text(msg1[4]);
+                    $("#ConcentIP").text(msg1[5]);
+                    $("#ConcentPort").text(msg1[6]);
+                } else if (msg[0] == 0) {
+                    alert("未查询到");
+                } else if (msg[0] == -1) {
+                    alert("连接服务器失败");
                 }
             }
         })
@@ -608,9 +624,9 @@
                     var msg2 = msg.split("|");
                     var exeState = '';
                     if (msg) {
-                        for (var i = 0; i < msg2.length; i++) {
+                        // for (var i = 0; i < msg2.length; i++) {
                             exeState = msg2[1];
-                        }
+                        // }
                         // console.log(exeState);
                         //用定时器，修饰处理过程
                         var textRecord = '';
@@ -627,7 +643,7 @@
                                 },
                                 success: function (msg) {
                                     var msg3 = msg.split("|");
-                                    for (var i = 0; i < msg3.length; i++) {
+                                    // for (var i = 0; i < msg3.length; i++) {
                                         if (msg3[0] == 1) {
                                             textRecord = msg3[4];
                                             if (msg3[4] == '未执行') {
@@ -640,7 +656,7 @@
                                         } else if (msg3[0] == -1) {
                                             alert("执行结果--连接服务器失败");
                                         }
-                                    }
+                                    // }
                                 }
                             })
                             if (textRecord == '成功') {
@@ -683,10 +699,19 @@
     }
     //修改集中器编号清空 事件
     function emptySome() {
+        console.log("12345")
         $("#ConcentNum").text('');
         $("#ConcentAddr").text('');
         $("#ConcentIP").text('');
         $("#ConcentPort").text('');
         $("#stateText").text('');
     }
+    //文本框失焦事件
+    $("#conSerialNum").on('blur', function () {
+        var thisValueLe = $("#conSerialNum").val();
+        if (thisValueLe.length < 14) {
+            alert("集中器编号不能小于14位");
+            $("#conSerialNum").val('');
+        }
+    })
 </script>

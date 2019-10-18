@@ -471,8 +471,8 @@
                     &nbsp;&nbsp;集中器（扫描 / 输入）
                     <span class="textSp"></span>
                 </div>
-                <div class="textP_b">编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()"
-                        maxlength="14" />
+                <div class="textP_b">编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum"
+                        oninput="emptySome()" maxlength="14" />
                     <div class="scanIcon"><img src="img/scan.png" alt=""></div>
                 </div>
                 <div class="inquireBtn" onclick='ConcentInform()'>查询</div>
@@ -579,28 +579,32 @@
     // 查询域名端口
     function ConcentInform() {
         var conSerNum = $("#conSerialNum").val();
-        $.ajax({
-            dataType: "text",
-            type: 'get',
-            url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
-            data: {
-                action: "queryInfo",
-                meterNo: conSerNum
-            },
-            success: function (msg) {
-                var msg1 = msg.split("|");
-                if (msg[0] == 1) {
-                    $("#ConcentNum").text(msg1[2]);
-                    $("#ConcentAddr").text(msg1[4]);
-                    $("#ConcentIP").text(msg1[5]);
-                    $("#ConcentPort").text(msg1[6]);
-                } else if (msg[0] == 0) {
-                    alert("未查询到");
-                } else if (msg[0] == -1) {
-                    alert("连接服务器失败");
+        if (conSerNum == '') {
+            return false;
+        } else {
+            $.ajax({
+                dataType: "text",
+                type: 'get',
+                url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
+                data: {
+                    action: "queryInfo",
+                    meterNo: conSerNum
+                },
+                success: function (msg) {
+                    var msg1 = msg.split("|");
+                    if (msg[0] == 1) {
+                        $("#ConcentNum").text(msg1[2]);
+                        $("#ConcentAddr").text(msg1[4]);
+                        $("#ConcentIP").text(msg1[5]);
+                        $("#ConcentPort").text(msg1[6]);
+                    } else if (msg[0] == 0) {
+                        alert("未查询到");
+                    } else if (msg[0] == -1) {
+                        alert("连接服务器失败");
+                    }
                 }
-            }
-        })
+            })
+        }
     }
     // 发送命令接口
     function cutBtn() {

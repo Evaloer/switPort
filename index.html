@@ -721,7 +721,7 @@
     //文本框失焦事件
     $("#conSerialNum").on('blur', function () {
         var thisValueLe = $("#conSerialNum").val();
-        if (thisValueLe.length < 14) {
+        if (thisValueLe.length < 14 && thisValueLe.length > 0) {
             alert("集中器编号不能小于14位");
         }
     })

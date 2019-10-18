@@ -404,7 +404,7 @@
 <script>
     //创建下拉框选择事件
     $("#FactDeli").bind("change", function () {
-        referUpdate();FactDeliDe
+        referUpdate();
     });
 
     // 查询域名端口
@@ -496,7 +496,7 @@
     //文本框失焦事件
     $("#concentNum").on('blur', function () {
         var thisValueLe = $("#concentNum").val();
-        if (thisValueLe.length < 14) {
+        if (thisValueLe.length < 14 && thisValueLe.length > 0) {
             alert("集中器编号不能小于14位");
             $("#concentNum").val('');
         } else {
@@ -506,10 +506,10 @@
 
     //更新查询事件
     function referUpdate() {
-        console.log("000000");
+        // console.log("000000");
         var concentNum = $("#concentNum").val();
         var FactDeliVal = $("#FactDeli option:selected").val();
-        console.log(concentNum + FactDeliVal);
+        // console.log(concentNum + FactDeliVal);
         if (concentNum == '') {
             return false;
         } else {
@@ -536,10 +536,6 @@
                         //按钮变化
                         $("#createBtn").hide();
                         $("#updateBtn").show();
-                    } else if (msg[0] == 0) {
-                        alert("该档案不存在");
-                    } else if (msg[0] == -1) {
-                        alert("连接服务器失败");
                     }
                 }
             })

@@ -134,7 +134,11 @@
         color: #282dc5;
         font-weight: 600;
     }
-
+    .titleJZQ span{
+        font-size: 12px;
+        line-height: .4rem;
+        color: #000;
+    }
     table {
         border-collapse: collapse;
     }
@@ -167,7 +171,9 @@
     }
 
     #createBtn,
-    #DeleteBtn {
+    #DeleteBtn,
+    #updateBtn,
+    #affirmBtn {
         width: 100%;
         height: .4rem;
         /* background:#cdcdcd; */
@@ -178,11 +184,13 @@
     }
 
     #createBtn p,
-    #DeleteBtn p {
+    #DeleteBtn p,
+    #updateBtn p,
+    #affirmBtn p {
         width: 50%;
         height: .3rem;
         text-align: center;
-        font-size: .16rem;
+        font-size: .15rem;
         line-height: .3rem;
         font-weight: 600;
         background: #fff url(img/foot-back.jpg) no-repeat;
@@ -198,20 +206,20 @@
         margin: .1rem auto 0;
     }
 
-    .removeBox {
+    #removeBox {
         width: 88%;
         padding: 0 6% 3% 6%;
         border-bottom: 1px solid #e9e9e9;
     }
 
-    .removeBox table {
+    #removeBox table {
         width: 100%;
         font-size: 14px;
         color: #666;
         /* border-bottom: 1px solid #cdcdcd; */
     }
 
-    .removeBox table tr {
+    #removeBox table tr {
         height: .26rem;
     }
 
@@ -237,7 +245,7 @@
                 <div class="contImportBox">
                     <table>
                         <thead>
-                            <p class="titleJZQ">注册集中器档案信息</p>
+                            <p class="titleJZQ">注册集中器档案信息<span>（如已存在可进行更新）</span></p>
                         </thead>
                         <tbody>
                             <tr>
@@ -252,7 +260,7 @@
                                     使用厂家：
                                 </td>
                                 <td>
-                                    <select name="" id="FactDeli" onchange="changeSelect()">
+                                    <select name="" id="FactDeli">
                                         <option value="1500001">厂家1</option>
                                         <option value="1500002">厂家2</option>
                                         <option value="1500003">厂家3</option>
@@ -301,7 +309,11 @@
                     </table>
                 </div>
                 <div id="createBtn" onclick="createFileBtn()">
-                    <p>创建</p>
+                    <p>档案创建</p>
+                </div>
+
+                <div id="updateBtn" onclick="updateFileBtn()" style="display:none">
+                    <p>档案更新</p>
                 </div>
             </div>
             <div class="contShowBox" style="margin-bottom: .1rem;">
@@ -315,7 +327,8 @@
                                 <td>
                                     集中器编号：
                                 </td>
-                                <td><input type="text" maxlength="14" id="concentNumDe" placeholder="请输入14位集中器编号" />
+                                <td><input type="text" maxlength="14" id="concentNumDe" placeholder="请输入14位集中器编号"
+                                        oninput="changeDeVal()" />
                                 </td>
                             </tr>
                             <tr>
@@ -324,10 +337,10 @@
                                 </td>
                                 <td>
                                     <select name="" id="FactDeliDe">
-                                        <option value="manuFa1">厂家1</option>
-                                        <option value="manuFa2">厂家2</option>
-                                        <option value="manuFa3">厂家3</option>
-                                        <option value="manuFa4">厂家4</option>
+                                        <option value="1500001">厂家1</option>
+                                        <option value="1500002">厂家2</option>
+                                        <option value="1500003">厂家3</option>
+                                        <option value="1500004">厂家4</option>
                                     </select>
                                 </td>
                             </tr>
@@ -335,7 +348,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="removeBox" style="display: none;">
+                <div id="removeBox" style="display: none;">
                     <table>
                         <tbody>
                             <!-- <tr><td>厂家代码：</td><td><input type="text" id="PlantCode"/></td></tr> -->
@@ -343,36 +356,39 @@
                                 <td>
                                     域名：
                                 </td>
-                                <td></td>
+                                <td id="domNameIn"></td>
                             </tr>
                             <tr>
                                 <td>
                                     端口：
                                 </td>
-                                <td></td>
+                                <td id="portNumIn"></td>
                             </tr>
                             <tr>
                                 <td>
                                     系统数据库：
                                 </td>
-                                <td></td>
+                                <td id="syDatabaseIn"></td>
                             </tr>
                             <tr>
                                 <td>
                                     系统网址：
                                 </td>
-                                <td></td>
+                                <td id="syWebSiteIn"></td>
                             </tr>
                             <tr>
                                 <td>
                                     客户经理姓名：
                                 </td>
-                                <td></td>
+                                <td id="customerNameIn"></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div id="DeleteBtn" onclick="DeleteFileBtn()">
+                <div id="affirmBtn" onclick="affirmFileBtn()">
+                    <p>点击确认档案信息</p>
+                </div>
+                <div id="DeleteBtn" onclick="DeleteFileBtn()" style="display:none">
                     <p>删除</p>
                 </div>
             </div>
@@ -386,13 +402,11 @@
 
 </html>
 <script>
-    function changeSelect() {
-        console.log("in");
-        var FactDeli = $("#FactDeli option:selected").text();
-        var FactDeliVal = $("#FactDeli option:selected").val();
-        console.log(FactDeli);
-        console.log(FactDeliVal);
-    }
+    //创建下拉框选择事件
+    $("#FactDeli").bind("change", function () {
+        referUpdate();FactDeliDe
+    });
+
     // 查询域名端口
     function createFileBtn() {
         // meterNo： 集中器编号
@@ -428,17 +442,54 @@
             },
             success: function (msg) {
                 console.log(msg);
-                // var msg1 = msg.split("|");
-                // for (var i = 0; i < msg1.length; i++) {
-                //     // console.log(msg[0]);
-                //     if (msg[0] == 1) {
-
-                //     } else if (msg[0] == 0) {
-                //         alert("未查询到");
-                //     } else if (msg[0] == 1) {
-                //         alert("连接服务器失败");
-                //     }
-                // }
+                var msg1 = msg.split("|");
+                // console.log(msg[0]);
+                if (msg[0] == 1) {
+                    alert("创建成功")
+                } else if (msg[0] == 0) {
+                    alert("该档案已存在");
+                } else if (msg[0] == -1) {
+                    alert("连接服务器失败");
+                }
+            }
+        })
+    }
+    //档案更新
+    function updateFileBtn() {
+        var concentNumUp = $("#concentNum").val();
+        var FactDeliUp = $("#FactDeli option:selected").text();
+        var FactDeliValUp = $("#FactDeli option:selected").val();
+        var domNameUp = $("#domName").val();
+        var portNumUp = $("#portNum").val();
+        var syDatabaseUp = $("#syDatabase").val();
+        var syWebSiteUp = $("#syWebSite").val();
+        var customerNameUp = $("#customerName").val();
+        $.ajax({
+            dataType: "text",
+            type: 'get',
+            url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
+            data: {
+                action: "meterUpdate",
+                meterNo: concentNumUp,
+                fac: FactDeliUp,
+                facNo: FactDeliValUp,
+                ip: domNameUp,
+                port: portNumUp,
+                dataBs: syDatabaseUp,
+                url: syWebSiteUp,
+                name: customerNameUp
+            },
+            success: function (msg) {
+                console.log(msg);
+                var msg1 = msg.split("|");
+                // console.log(msg[0]);
+                if (msg[0] == 1) {
+                    alert("档案更新成功");
+                } else if (msg[0] == 0) {
+                    alert("该档案不存在");
+                } else if (msg[0] == -1) {
+                    alert("连接服务器失败");
+                }
             }
         })
     }
@@ -449,9 +500,19 @@
             alert("集中器编号不能小于14位");
             $("#concentNum").val('');
         } else {
-            console.log("000000");
-            var concentNum = $("#concentNum").val();
-            var FactDeliVal = $("#FactDeli option:selected").val();
+            referUpdate();
+        }
+    })
+
+    //更新查询事件
+    function referUpdate() {
+        console.log("000000");
+        var concentNum = $("#concentNum").val();
+        var FactDeliVal = $("#FactDeli option:selected").val();
+        console.log(concentNum + FactDeliVal);
+        if (concentNum == '') {
+            return false;
+        } else {
             $.ajax({
                 dataType: "text",
                 type: 'get',
@@ -471,7 +532,10 @@
                         $("#portNum").val(msg1[6]);
                         $("#syDatabase").val(msg1[7]);
                         $("#syWebSite").val(msg1[8]);
-                        $("#customerName").val(msgVal9[0])
+                        $("#customerName").val(msgVal9[0]);
+                        //按钮变化
+                        $("#createBtn").hide();
+                        $("#updateBtn").show();
                     } else if (msg[0] == 0) {
                         alert("该档案不存在");
                     } else if (msg[0] == -1) {
@@ -480,7 +544,7 @@
                 }
             })
         }
-    })
+    }
     //集中器编号修改后清空
     function changeVal() {
         $("#domName").val("");
@@ -488,5 +552,110 @@
         $("#syDatabase").val("");
         $("#syWebSite").val("");
         $("#customerName").val("")
+
+        //按钮变化
+        $("#createBtn").show();
+        $("#updateBtn").hide();
+    }
+
+    //删除前确认档案信息
+    function affirmFileBtn() {
+        var concentNumDe = $("#concentNumDe").val();
+        var FactDeliValDe = $("#FactDeliDe option:selected").val();
+        $.ajax({
+            dataType: "text",
+            type: 'get',
+            url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
+            data: {
+                action: "meterInfo",
+                meterNo: concentNumDe,
+                facNo: FactDeliValDe
+            },
+            success: function (msg) {
+                var msg1 = msg.split("|");
+                // console.log(msg1);
+                if (msg[0] == 9) {
+                    var msgVal9 = msg1[9].split("$");
+                    $("#removeBox").fadeIn(1000);
+                    $("#domNameIn").text(msg1[5]);
+                    $("#portNumIn").text(msg1[6]);
+                    $("#syDatabaseIn").text(msg1[7]);
+                    $("#syWebSiteIn").text(msg1[8]);
+                    $("#customerNameIn").text(msgVal9[0]);
+                    //按钮变化
+                    $("#affirmBtn").hide();
+                    $("#DeleteBtn").show();
+                } else if (msg[0] == 0) {
+                    alert("该档案不存在");
+                } else if (msg[0] == -1) {
+                    alert("连接服务器失败");
+                }
+            }
+        })
+    }
+    //删除前确认档案后修改文本
+    function changeDeVal() {
+        $("#domNameIn").text("");
+        $("#portNumIn").text("");
+        $("#syDatabaseIn").text("");
+        $("#syWebSiteIn").text("");
+        $("#customerNameIn").text("")
+
+        //按钮变化
+        $("#removeBox").fadeOut(500);
+        $("#affirmBtn").show();
+        $("#DeleteBtn").hide();
+    }
+
+    //删除下拉框选择事件
+    $("#FactDeliDe").bind("change", function () {
+        $("#domNameIn").text("");
+        $("#portNumIn").text("");
+        $("#syDatabaseIn").text("");
+        $("#syWebSiteIn").text("");
+        $("#customerNameIn").text("")
+
+        //按钮变化
+        $("#removeBox").fadeOut(500);
+        $("#affirmBtn").show();
+        $("#DeleteBtn").hide();
+    });
+
+    //删除档案
+    function DeleteFileBtn() {
+        var concentNumDe = $("#concentNumDe").val();
+        var FactDeliDe = $("#FactDeliDe option:selected").text();
+        var FactDeliValDe = $("#FactDeliDe option:selected").val();
+        $.ajax({
+            dataType: "text",
+            type: 'get',
+            url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
+            data: {
+                action: "meterDelete",
+                meterNo: concentNumDe,
+                fac: FactDeliDe,
+                facNo: FactDeliValDe
+            },
+            success: function (msg) {
+                var msg1 = msg.split("|");
+                console.log(msg1);
+                if (msg[0] == 9) {
+                    alert("档案删除成功")
+                    $("#removeBox").fadeOut(1000);
+                    $("#domNameIn").text("");
+                    $("#portNumIn").text("");
+                    $("#syDatabaseIn").text("");
+                    $("#syWebSiteIn").text("");
+                    $("#customerNameIn").text("");
+                    //按钮变化
+                    $("#affirmBtn").show();
+                    $("#DeleteBtn").hide();
+                } else if (msg[0] == 0) {
+                    alert("该档案不存在");
+                } else if (msg[0] == -1) {
+                    alert("连接服务器失败");
+                }
+            }
+        })
     }
 </script>

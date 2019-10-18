@@ -140,9 +140,9 @@
     }
 
     .textP_b {
-        font-size: 15px;
+        font-size: 16px;
         /* color: #888; */
-        line-height: .2rem;
+        /* line-height: .2rem; */
         display: -webkit-flex;
         align-items: center;
         justify-content: center;
@@ -151,12 +151,12 @@
     .textP_b input {
         -web-kit-appearance: none;
         -moz-appearance: none;
-        font-size: .14rem;
+        font-size: .15rem;
         width: 55%;
-        height: .28rem;
+        height: .33rem;
         border-radius: .06rem;
         padding: 0 .05rem 0 .05rem;
-        border: 1px solid #cdcdcd;
+        border: 1px solid #c8cccf;
         color: #6a6f77;
         margin-left: .05rem;
     }
@@ -177,7 +177,7 @@
 
     .scanIcon {
         width: .38rem;
-        height: .26rem;
+        height: .31rem;
         border: 1px solid #cdcdcd;
         margin-left: .05rem;
         border-radius: .05rem;
@@ -187,6 +187,7 @@
     .scanIcon img {
         width: .26rem;
         margin-left: .05rem;
+        margin-top: .02rem;
     }
 
     .contShowBox {
@@ -470,8 +471,7 @@
                     &nbsp;&nbsp;集中器（扫描 / 输入）
                     <span class="textSp"></span>
                 </div>
-                <div class="textP_b">
-                    编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()"
+                <div class="textP_b">编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()"
                         maxlength="14" />
                     <div class="scanIcon"><img src="img/scan.png" alt=""></div>
                 </div>
@@ -570,10 +570,10 @@
     window.addEventListener('resize', () => {
         if (window.innerHeight < H) {
             // 隐藏按钮
-            $("footer").css("display","none");
+            $("footer").css("display", "none");
         } else {
             // 显示按钮
-            $("footer").css("display","block");
+            $("footer").css("display", "block");
         }
     });
     // 查询域名端口

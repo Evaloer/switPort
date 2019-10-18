@@ -85,9 +85,10 @@
         width: 96%;
         height: .8rem;
         background: #fff;
-        margin-top: .1rem;
+        margin-top: .08rem;
         display: -webkit-flex;
         align-items: center;
+        border-bottom: 1px solid #dbdbdb;
     }
 
     .modeTitle_img {
@@ -113,7 +114,7 @@
 
     .contMode {
         width: 100%;
-        margin-top: .1rem;
+        margin-top: .06rem;
         display: -webkit-flex;
         justify-content: center;
     }
@@ -235,7 +236,7 @@
 
     .explainMode {
         width: 100%;
-        margin-top: .1rem;
+        margin: .14rem 0 .4rem 0;
     }
 
     .explainModeText {
@@ -243,7 +244,7 @@
         height: .4rem;
         background-color: #fff;
         text-align: center;
-        margin: 0 auto .05rem;
+        margin: 0 auto .03rem;
     }
 
     .explainModeText p {
@@ -471,7 +472,7 @@
                 </div>
                 <div class="textP_b">
                     编号：<input type="tel" placeholder="请输入或扫描集中器编号" id="conSerialNum" oninput="emptySome()"
-                        maxlength="14" on />
+                        maxlength="14" />
                     <div class="scanIcon"><img src="img/scan.png" alt=""></div>
                 </div>
                 <div class="inquireBtn" onclick='ConcentInform()'>查询</div>
@@ -563,6 +564,18 @@
 
 </html>
 <script>
+    // 窗口高度
+    const H = window.innerHeight;
+    // 页面初始化后绑定resize方法
+    window.addEventListener('resize', () => {
+        if (window.innerHeight < H) {
+            // 隐藏按钮
+            $("footer").css("display","none");
+        } else {
+            // 显示按钮
+            $("footer").css("display","block");
+        }
+    });
     // 查询域名端口
     function ConcentInform() {
         var conSerNum = $("#conSerialNum").val();
@@ -576,8 +589,6 @@
             },
             success: function (msg) {
                 var msg1 = msg.split("|");
-                // console.log(msg1);
-                // console.log(msg[0]);
                 if (msg[0] == 1) {
                     $("#ConcentNum").text(msg1[2]);
                     $("#ConcentAddr").text(msg1[4]);
@@ -625,7 +636,7 @@
                     var exeState = '';
                     if (msg) {
                         // for (var i = 0; i < msg2.length; i++) {
-                            exeState = msg2[1];
+                        exeState = msg2[1];
                         // }
                         // console.log(exeState);
                         //用定时器，修饰处理过程
@@ -643,20 +654,18 @@
                                 },
                                 success: function (msg) {
                                     var msg3 = msg.split("|");
-                                    // for (var i = 0; i < msg3.length; i++) {
-                                        if (msg3[0] == 1) {
-                                            textRecord = msg3[4];
-                                            if (msg3[4] == '未执行') {
-                                                $("#stateText").html('正在执行中..');
-                                            } else {
-                                                $("#stateText").html(msg3[4]);
-                                            }
-                                        } else if (msg3[0] == 0) {
-                                            alert("执行结果--未查询到");
-                                        } else if (msg3[0] == -1) {
-                                            alert("执行结果--连接服务器失败");
+                                    if (msg3[0] == 1) {
+                                        textRecord = msg3[4];
+                                        if (msg3[4] == '未执行') {
+                                            $("#stateText").html('正在执行中..');
+                                        } else {
+                                            $("#stateText").html(msg3[4]);
                                         }
-                                    // }
+                                    } else if (msg3[0] == 0) {
+                                        alert("执行结果--未查询到");
+                                    } else if (msg3[0] == -1) {
+                                        alert("执行结果--连接服务器失败");
+                                    }
                                 }
                             })
                             if (textRecord == '成功') {
@@ -678,7 +687,6 @@
                                 $("#floAN_a").css('text-align', 'center')
                             }
                             timeRecord++;
-                            // console.log(timeRecord);
                         }, 4000);
                     } else if (msg == -1) {
                         alert("连接服务器失败");
@@ -711,7 +719,6 @@
         var thisValueLe = $("#conSerialNum").val();
         if (thisValueLe.length < 14) {
             alert("集中器编号不能小于14位");
-            $("#conSerialNum").val('');
         }
     })
 </script>

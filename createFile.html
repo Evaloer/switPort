@@ -88,11 +88,11 @@
         text-align: center;
         line-height: .26rem;
         font-weight: 600;
-        font-size:.15rem;
+        font-size: .15rem;
         color: #282dc5;
         /* border: 1px solid #cdcdcd; */
-        background:url(img/btnBack.png) no-repeat;
-        background-size:100% 100%; 
+        background: url(img/btnBack.png) no-repeat;
+        background-size: 100% 100%;
     }
 
     /* section */
@@ -219,8 +219,6 @@
     footer {
         width: 100%;
         background: #fff;
-        /* background: url(img/footBackB.png) no-repeat center;
-        background-size: 160% 100%; */
         height: .5rem;
     }
 </style>
@@ -246,7 +244,8 @@
                                 <td>
                                     集中器编号：
                                 </td>
-                                <td><input type="tel" maxlength="14" id="concentNum" placeholder="请输入14位集中器编号" /></td>
+                                <td><input type="tel" maxlength="14" id="concentNum" placeholder="请输入14位集中器编号"
+                                        oninput="changeVal()" /></td>
                             </tr>
                             <tr>
                                 <td>
@@ -266,7 +265,7 @@
                                 <td>
                                     域名：
                                 </td>
-                                <td onclick="inquireThis()"><input type="text" id="domName" placeholder="请输入域名"/></td>
+                                <td><input type="text" id="domName" placeholder="请输入域名" /></td>
                             </tr>
                             <tr>
                                 <td>
@@ -443,45 +442,51 @@
             }
         })
     }
-    function inquireThis() {
-        console.log("000000");
-        var concentNum = $("#concentNum").val();
-        var FactDeliVal = $("#FactDeli option:selected").val();
-        $.ajax({
-            dataType: "text",
-            type: 'get',
-            url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
-            data: {
-                action: "meterInfo",
-                meterNo: concentNum,
-                facNo: FactDeliVal
-            },
-            success: function (msg) {
-                var msg1 = msg.split("|");
-                    console.log(msg1);
-                    if (msg[0] == 9) {
-                        alert("该集中器已存在与此厂家，继续操作可执行档案更新");
-                        var msgVal9 = msg1[9].split("$");
-                        $("#domName").val(msg1[5]),
-                            $("#portNum").val(msg1[6]),
-                            $("#syDatabase").val(msg1[7]),
-                            $("#syWebSite").val(msg1[8]),
-                            $("#customerName").val(msgVal9[0])
-                    } else if (msg[0] == 0) {
-                        alert("该档案不存在");
-                    } else if (msg[0] == -1) {
-                        alert("连接服务器失败");
-                    }
-                }
-        })
-    }
-    
     //文本框失焦事件
     $("#concentNum").on('blur', function () {
         var thisValueLe = $("#concentNum").val();
         if (thisValueLe.length < 14) {
             alert("集中器编号不能小于14位");
             $("#concentNum").val('');
+        } else {
+            console.log("000000");
+            var concentNum = $("#concentNum").val();
+            var FactDeliVal = $("#FactDeli option:selected").val();
+            $.ajax({
+                dataType: "text",
+                type: 'get',
+                url: 'http://125.76.225.60/SendCmdJZQ/MtPosHandler.ashx',
+                data: {
+                    action: "meterInfo",
+                    meterNo: concentNum,
+                    facNo: FactDeliVal
+                },
+                success: function (msg) {
+                    var msg1 = msg.split("|");
+                    console.log(msg1);
+                    if (msg[0] == 9) {
+                        alert("该集中器已存在与此厂家，继续操作可执行档案更新");
+                        var msgVal9 = msg1[9].split("$");
+                        $("#domName").val(msg1[5]);
+                        $("#portNum").val(msg1[6]);
+                        $("#syDatabase").val(msg1[7]);
+                        $("#syWebSite").val(msg1[8]);
+                        $("#customerName").val(msgVal9[0])
+                    } else if (msg[0] == 0) {
+                        alert("该档案不存在");
+                    } else if (msg[0] == -1) {
+                        alert("连接服务器失败");
+                    }
+                }
+            })
         }
     })
+    //集中器编号修改后清空
+    function changeVal() {
+        $("#domName").val("");
+        $("#portNum").val("");
+        $("#syDatabase").val("");
+        $("#syWebSite").val("");
+        $("#customerName").val("")
+    }
 </script>

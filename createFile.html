@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>建档</title>
+    <title>建档管理</title>
 </head>
 <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
 <style>
@@ -210,7 +210,7 @@
         width: 96%;
         /* height: 1rem; */
         background: #fff;
-        margin: .1rem auto 0;
+        margin: .1rem auto .16rem;
     }
 
     #removeBox {
@@ -242,7 +242,7 @@
     <!-- 头部 -->
     <header>
         <a href="index.html"><img src="img/returnIco.png" alt=""></a>
-        <p style="margin-left: .35rem;">手动建档</p>
+        <p style="margin-left: .35rem;">建档管理</p>
         <a href="" class="referBtn">查询</a>
     </header>
     <!-- 中间 -->
@@ -323,7 +323,7 @@
                     <p>档案更新</p>
                 </div>
             </div>
-            <div class="contShowBox" style="margin-bottom: .1rem;">
+            <div class="contShowBox">
                 <div class="contImportBox">
                     <table>
                         <thead>
@@ -614,7 +614,7 @@
         $("#DeleteBtn").hide();
     }
 
-    //删除下拉框选择事件
+    //删除 下拉框选择事件
     $("#FactDeliDe").bind("change", function () {
         $("#domNameIn").text("");
         $("#portNumIn").text("");
